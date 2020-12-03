@@ -1005,11 +1005,12 @@ const passwords = [
 
 const policyArr = (arr) => arr.reduce((acc, str) => {
     //const [, one, two, letter, password] = str.match(/^(\d+)-(\d+) (\w): (\w+)$/)
+    // const min = parseInt(one, 10)
+    // const max = parseInt(two, 10)
     const [policy, password] = str.split(":");
     const [frequency, letter] = policy.split(" ")
     const [min, max] = frequency.split("-");
-    // const min = parseInt(one, 10)
-    // const max = parseInt(two, 10)
+  
     return acc.concat({
         password,
         letter,
@@ -1031,8 +1032,8 @@ const checkPolicy = arr => {
     return count;
 }
 
-// console.log(checkPolicy(policyArr(passwords)))
-// console.table(policyArr(passwords))
+console.log(checkPolicy(policyArr(passwords)))
+console.table(policyArr(passwords))
 
 
 

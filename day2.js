@@ -1,19 +1,20 @@
 const passwords = [
-    "6-8 s: svsssszslpsp",  // 1
-    "4-8 v: vkvmvdmvhttvvrgvvwv", // 0
-    "16-18 j: jjjjjjjjjjjjjjjjjf", //2
-    "13-15 p: pppppppvppppxxppp", //3
-    "3-4 k: bkksggqbtwkkkzqcz",// 0
-    "8-18 x: qxphxxtczxxxxxrbxxl",//4
-    "6-11 c: dccxcccccchrcfdckcsc",//0
-    "10-11 c: ccvxccccccccc", //5
-    "2-4 f: pszff", //6
-    "18-20 z: zzzzzzzzzzwzzzzzzzzj", //7
-    "1-7 g: ggggggpggggggg",//0
-    "3-5 h: hhhhfhh",//0
-    "2-5 x: dxxzxv", // 8
-    "7-8 s: ssssssss",//9
-    "3-9 k: ktkkkkkklkck",//10
+    "6-8 s: svsssszslpsp",
+    "3-4 n: gncn",
+    "4-8 v: vkvmvdmvhttvvrgvvwv",
+    "16-18 j: jjjjjjjjjjjjjjjjjf",
+    "13-15 p: pppppppvppppxxppp",
+    "3-4 k: bkksggqbtwkkkzqcz",
+    "8-18 x: qxphxxtczxxxxxrbxxl",
+    "6-11 c: dccxcccccchrcfdckcsc",
+    "10-11 c: ccvxccccccccc",
+    "2-4 f: pszff",
+    "18-20 z: zzzzzzzzzzwzzzzzzzzj",
+    "1-7 g: ggggggpggggggg",
+    "3-5 h: hhhhfhh",
+    "2-5 x: dxxzxv",
+    "7-8 s: ssssssss",
+    "3-9 k: ktkkkkkklkck",
     "2-9 r: rzrrrrrrrrrrrr",
     "5-9 k: tkrkhkxbvkbkkkkk",
     "8-9 n: tnnpbnrns",
@@ -1003,10 +1004,12 @@ const passwords = [
 //part 1
 
 const policyArr = (arr) => arr.reduce((acc, str) => {
-    const [policy, password] = str.split(": ");
+    //const [, one, two, letter, password] = str.match(/^(\d+)-(\d+) (\w): (\w+)$/)
+    const [policy, password] = str.split(":");
     const [frequency, letter] = policy.split(" ")
     const [min, max] = frequency.split("-");
-
+    // const min = parseInt(one, 10)
+    // const max = parseInt(two, 10)
     return acc.concat({
         password,
         letter,
@@ -1016,23 +1019,28 @@ const policyArr = (arr) => arr.reduce((acc, str) => {
 }, [])
 
 const countLetter = ({password, letter}) => {
-    let arr = [...password].filter((element) => element === letter)
-    return arr.length;
+    return [...password].filter((element) => element === letter).length
 }
 
 const checkPolicy = arr => {
     let count = 0;
     for(let password of arr) {
-        if(countLetter(password) >= password.min && countLetter(password) <= password.max) count++
+        if(countLetter(password) >= password.min &&
+            countLetter(password) <= password.max) count++
     }
     return count;
 }
 
-console.log(checkPolicy(policyArr(passwords)))
+// console.log(checkPolicy(policyArr(passwords)))
+// console.table(policyArr(passwords))
+
+
+
+//part 2
+const isCorrectIndex = (arr) => arr.filter(({password, letter, min, max}) => {
+        return (password[min] === letter && password[max] !== letter) ||  (password[min] !== letter && password[max] === letter)
+}).length
+
+console.log(isCorrectIndex(policyArr(passwords)))
+
 console.table(policyArr(passwords))
-
-
-
-
-
-
